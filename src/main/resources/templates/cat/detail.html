@@ -4,39 +4,58 @@
     <meta charset="UTF-8">
     <title>Detail Kucing</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body { background-color: #fafafa; }
+        .card { border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    </style>
 </head>
 <body>
-<div class="container mt-5">
-    <h1 th:text="${cat.name}"></h1>
+<div class="container py-5">
+    <div class="card p-4">
+        <h2 class="mb-3" th:text="${cat.name}"></h2>
+        <div class="row">
+            <div class="col-md-4">
+                <img th:src="@{'/images/' + ${cat.photo}}" class="img-fluid rounded" alt="Foto Kucing">
+            </div>
+            <div class="col-md-8">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Umur:</strong> <span th:text="${cat.age}"></span> tahun</li>
+                    <li class="list-group-item"><strong>Ras:</strong> <span th:text="${cat.breed}"></span></li>
+                    <li class="list-group-item"><strong>Jenis Kelamin:</strong> <span th:text="${cat.gender}"></span></li>
+                    <li class="list-group-item"><strong>Deskripsi:</strong><br> <span th:text="${cat.description}"></span></li>
+                    <li class="list-group-item"><strong>Status Validasi:</strong> <span th:text="${cat.validated ? 'Sudah divalidasi' : 'Belum'}"></span></li>
+                    <li class="list-group-item"><strong>Status Adopsi:</strong> <span th:text="${cat.adopted ? 'Sudah diadopsi' : 'Belum'}"></span></li>
+                </ul>
 
-    <div class="row mt-4">
-        <div class="col-md-4">
-            <img th:src="@{'/images/' + ${cat.photo}}" class="img-fluid rounded" alt="Foto Kucing">
-        </div>
-        <div class="col-md-8">
-            <p><strong>Umur:</strong> <span th:text="${cat.age}"></span> tahun</p>
-            <p><strong>Ras:</strong> <span th:text="${cat.breed}"></span></p>
-            <p><strong>Jenis Kelamin:</strong> <span th:text="${cat.gender}"></span></p>
-            <p><strong>Deskripsi:</strong><br> <span th:text="${cat.description}"></span></p>
-            <p><strong>Status Validasi:</strong> <span th:text="${cat.validated ? '✅ Sudah divalidasi' : '❌ Belum'}"></span></p>
-            <p><strong>Status Adopsi:</strong> <span th:text="${cat.adopted ? '✅ Sudah diadopsi' : '❌ Belum'}"></span></p>
+                <div class="mt-4">
+                    <form th:action="@{'/cats/' + ${cat.id} + '/validate'}" method="post" th:if="${!cat.validated}" class="d-inline">
+                        <button class="btn btn-warning">
+                            <i class="bi bi-shield-check"></i> Validasi
+                        </button>
+                    </form>
 
-            <form th:action="@{'/cats/' + ${cat.id} + '/validate'}" method="post" th:if="${!cat.validated}">
-                <button class="btn btn-warning">Validasi</button>
-            </form>
+                    <form th:action="@{'/cats/' + ${cat.id} + '/adopt'}" method="post" th:if="${!cat.adopted}" class="d-inline">
+                        <button class="btn btn-success">
+                            <i class="bi bi-house-heart"></i> Tandai Diadopsi
+                        </button>
+                    </form>
 
-            <form th:action="@{'/cats/' + ${cat.id} + '/adopt'}" method="post" th:if="${!cat.adopted}">
-                <button class="btn btn-success mt-2">Tandai Sudah Diadopsi</button>
-            </form>
+                    <a th:href="@{'/cats/' + ${cat.id} + '/edit'}" class="btn btn-primary">
+                        <i class="bi bi-pencil-square"></i> Edit
+                    </a>
 
-            <a th:href="@{'/cats/' + ${cat.id} + '/edit'}" class="btn btn-primary mt-3">Edit</a>
+                    <form th:action="@{'/cats/' + ${cat.id} + '/delete'}" method="post" class="d-inline">
+                        <button class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Hapus
+                        </button>
+                    </form>
+                </div>
 
-            <form th:action="@{'/cats/' + ${cat.id} + '/delete'}" method="post" class="d-inline">
-                <button class="btn btn-danger mt-3">Hapus</button>
-            </form>
-
-            <br><br>
-            <a href="/cats" class="btn btn-secondary">Kembali</a>
+                <a href="/cats" class="btn btn-secondary mt-3">
+                    <i class="bi bi-arrow-left"></i> Kembali
+                </a>
+            </div>
         </div>
     </div>
 </div>

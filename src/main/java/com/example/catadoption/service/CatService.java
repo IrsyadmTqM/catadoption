@@ -8,4 +8,8 @@ public interface CatService {
     Cat getCatById(Long id);
     Cat saveCat(Cat cat);
     void deleteCat(Long id);
+
+    // 🔽 Tambahkan ini untuk filter
+    List<Cat> filterCats(String name, String breed, String gender, Boolean adopted, Boolean validated);
+
 }

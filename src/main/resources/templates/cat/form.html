@@ -1,56 +1,94 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Form Kucing</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f2f5;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
+
 <body>
-<div class="container mt-5">
-    <h1 th:text="${cat.id == null ? 'Tambah Kucing' : 'Edit Kucing'}" class="mb-4"></h1>
+    <div class="container py-5">
+        <div class="form-container mx-auto" style="max-width: 600px;">
+            <h2 class="mb-4 text-center" th:text="${cat.id == null ? 'Tambah Kucing' : 'Edit Kucing'}"></h2>
 
-    <form th:action="@{/cats}" th:object="${cat}" method="post" enctype="multipart/form-data">
-        <input type="hidden" th:field="*{id}"/>
+            <form th:action="@{/cats}" th:object="${cat}" method="post" enctype="multipart/form-data">
+                <input type="hidden" th:field="*{id}" />
 
-        <div class="mb-3">
-            <label>Nama</label>
-            <input type="text" th:field="*{name}" class="form-control" required>
+                <div class="mb-3">
+                    <label class="form-label">Nama</label>
+                    <input type="text" th:field="*{name}" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Umur (dalam bulan)</label>
+                    <input type="number" th:field="*{age}" class="form-control" placeholder="Contoh: 6 untuk 6 bulan"
+                        min="0" required>
+                </div>
+
+
+                <div class="mb-3">
+                    <label class="form-label">Ras</label>
+                    <select th:field="*{breed}" class="form-select">
+                        <option value="Kucing Kampung">Kucing Kampung</option>
+                        <option value="Kucing Persia">Kucing Persia</option>
+                        <option value="Kucing Bengal">Kucing Bengal</option>
+                        <option value="Kucing Munchkin">Kucing Munchkin</option>
+                        <option value="Kucing Busok">Kucing Busok</option>
+                        <option value="Kucing hutan">Kucing hutan</option>
+                        <option value="Maine Coon">Maine Coon</option>
+                        <option value="Kucing Ragdoll">Kucing Ragdoll</option>
+                        <option value="Kucing Sphynx">Kucing Sphynx</option>
+                        <option value="British Shorthair">British Shorthair</option>
+                        <option value="Kucing Siam">Kucing Siam</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Jenis Kelamin</label>
+                    <select th:field="*{gender}" class="form-select">
+                        <option value="Jantan">Jantan</option>
+                        <option value="Betina">Betina</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Deskripsi</label>
+                    <textarea th:field="*{description}" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Foto</label>
+                    <input type="file" name="file" class="form-control">
+                    <div class="mt-2" th:if="${cat.photo}">
+                        <img th:src="@{'/images/' + ${cat.photo}}" class="img-thumbnail" style="height: 150px;">
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Simpan
+                    </button>
+                    <a href="/cats" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left-circle"></i> Kembali
+                    </a>
+                </div>
+            </form>
         </div>
-
-        <div class="mb-3">
-            <label>Umur</label>
-            <input type="number" th:field="*{age}" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label>Ras</label>
-            <input type="text" th:field="*{breed}" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label>Jenis Kelamin</label>
-            <select th:field="*{gender}" class="form-select">
-                <option value="Jantan">Jantan</option>
-                <option value="Betina">Betina</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label>Deskripsi</label>
-            <textarea th:field="*{description}" class="form-control" rows="3"></textarea>
-        </div>
-
-        <div class="mb-3">
-            <label>Foto</label>
-            <input type="file" name="file" class="form-control">
-            <div class="mt-2" th:if="${cat.photo}">
-                <img th:src="@{'/images/' + ${cat.photo}}" class="img-thumbnail" style="height: 150px;">
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-success">Simpan</button>
-        <a href="/cats" class="btn btn-secondary">Kembali</a>
-    </form>
-</div>
+    </div>
 </body>
+
 </html>

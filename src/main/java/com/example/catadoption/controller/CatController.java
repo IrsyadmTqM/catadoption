@@ -23,8 +23,27 @@ public class CatController {
     private String uploadDir;
 
     @GetMapping
-    public String listCats(Model model) {
-        model.addAttribute("cats", catService.getAllCats());
+    public String listCats(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String breed,
+            @RequestParam(required = false) String gender,
+            @RequestParam(required = false) String validated,
+            @RequestParam(required = false) String adopted,
+            Model model) {
+
+        breed = (breed == null || breed.isEmpty()) ? null : breed;
+        gender = (gender == null || gender.isEmpty()) ? null : gender;
+        Boolean isValidated = (validated == null || validated.isEmpty()) ? null : Boolean.valueOf(validated);
+        Boolean isAdopted = (adopted == null || adopted.isEmpty()) ? null : Boolean.valueOf(adopted);
+        name = (name == null || name.isBlank()) ? null : name.trim();
+
+        model.addAttribute("cats", catService.filterCats(name, breed, gender, isValidated, isAdopted));
+        model.addAttribute("searchName", name);
+        model.addAttribute("selectedBreed", breed);
+        model.addAttribute("selectedGender", gender);
+        model.addAttribute("selectedValidated", isValidated);
+        model.addAttribute("selectedAdopted", isAdopted);
+
         return "cat/list";
     }
 
@@ -34,27 +53,26 @@ public class CatController {
         return "cat/form";
     }
 
-@PostMapping
-public String saveCat(@ModelAttribute Cat cat,
-                      @RequestParam("file") MultipartFile file) throws IOException {
+    @PostMapping
+    public String saveCat(@ModelAttribute Cat cat,
+            @RequestParam("file") MultipartFile file) throws IOException {
 
-    if (!file.isEmpty()) {
-        String fileName = file.getOriginalFilename();
+        if (!file.isEmpty()) {
+            String fileName = file.getOriginalFilename();
+            File uploadPath = new File(System.getProperty("user.dir"), uploadDir);
+            if (!uploadPath.exists()) {
+                uploadPath.mkdirs();
+            }
 
-        File uploadPath = new File(uploadDir);
-        if (!uploadPath.exists()) {
-            uploadPath.mkdirs(); // BIKIN FOLDER kalau belum ada
+            File destination = new File(uploadPath, fileName);
+            file.transferTo(destination);
+
+            cat.setPhoto(fileName);
         }
 
-        File destination = new File(uploadPath, fileName);
-        file.transferTo(destination);
-
-        cat.setPhoto(fileName);
+        catService.saveCat(cat);
+        return "redirect:/cats";
     }
-
-    catService.saveCat(cat);
-    return "redirect:/cats";
-}
 
     @GetMapping("/{id}")
     public String detailCat(@PathVariable Long id, Model model) {
@@ -89,4 +107,5 @@ public String saveCat(@ModelAttribute Cat cat,
         catService.saveCat(cat);
         return "redirect:/cats/" + id;
     }
+
 }
