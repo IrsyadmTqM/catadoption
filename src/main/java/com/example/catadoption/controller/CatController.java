@@ -37,12 +37,12 @@ public class CatController {
         Boolean isAdopted = (adopted == null || adopted.isEmpty()) ? null : Boolean.valueOf(adopted);
         name = (name == null || name.isBlank()) ? null : name.trim();
 
-        model.addAttribute("cats", catService.filterCats(name, breed, gender, isValidated, isAdopted));
+        model.addAttribute("cats", catService.filterCats(name, breed, gender, isAdopted, isValidated));
         model.addAttribute("searchName", name);
         model.addAttribute("selectedBreed", breed);
         model.addAttribute("selectedGender", gender);
-        model.addAttribute("selectedValidated", isValidated);
         model.addAttribute("selectedAdopted", isAdopted);
+        model.addAttribute("selectedValidated", isValidated);
 
         return "cat/list";
     }
