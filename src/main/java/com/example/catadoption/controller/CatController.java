@@ -37,12 +37,12 @@ public class CatController {
         Boolean isAdopted = (adopted == null || adopted.isEmpty()) ? null : Boolean.valueOf(adopted);
         name = (name == null || name.isBlank()) ? null : name.trim();
 
-        model.addAttribute("cats", catService.filterCats(name, breed, gender, isAdopted, isValidated));
+        model.addAttribute("cats", catService.filterCats(name, breed, gender, isValidated, isAdopted));
         model.addAttribute("searchName", name);
         model.addAttribute("selectedBreed", breed);
         model.addAttribute("selectedGender", gender);
-        model.addAttribute("selectedAdopted", isAdopted);
         model.addAttribute("selectedValidated", isValidated);
+        model.addAttribute("selectedAdopted", isAdopted);
 
         return "cat/list";
     }
@@ -68,7 +68,15 @@ public class CatController {
             file.transferTo(destination);
 
             cat.setPhoto(fileName);
+        } else {
+        // 🔽 Ambil data lama jika tidak upload file baru
+        if (cat.getId() != null) {
+            Cat existingCat = catService.getCatById(cat.getId());
+            if (existingCat != null) {
+                cat.setPhoto(existingCat.getPhoto());
+            }
         }
+    }
 
         catService.saveCat(cat);
         return "redirect:/cats";

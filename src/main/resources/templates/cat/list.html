@@ -1,43 +1,90 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="id">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Daftar Kucing</title>
+
+    <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
     <style>
+        .btn-cyan {
+            background-color: #00bcd4;
+            color: white;
+        }
+
+        .btn-cyan:hover {
+            background-color: #0097a7;
+        }
+
+
         body {
-            background-image: linear-gradient(-20deg, #b721ff 0%, #21d4fd 100%);
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            height: 100%;
-        }
-
-        .card-img-top {
-            height: 250px;
-            object-fit: cover;
+            background: linear-gradient(135deg, #e0f7fa, #fefefe);
+            font-family: 'Segoe UI', sans-serif;
+            color: #343a40;
         }
 
         .card {
             border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            border: none;
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-img-top {
+            height: 230px;
+            object-fit: cover;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .form-select,
+        .form-control {
+            border-radius: 10px;
+        }
+
+        .btn-flat {
+            border-radius: 10px;
+        }
+
+        .form-section {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        @media (max-width: 768px) {
+
+            .form-section .col-md-2,
+            .form-section .col-md-3 {
+                margin-bottom: 10px;
+            }
+
+            .text-end {
+                text-align: left !important;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="container py-5 ">
-        <h1 class="text-center mb-4">Manajemen Adopsi Kucing</h1>
-        <form method="get" class="row g-2 mb-4">
-            <div class="col">
+    <div class="container py-4">
+        <h1 class="text-center mb-4">MANAJEMEN ADOPSI KUCING</h1>
+
+        <!-- Filter Form -->
+        <form method="get" class="form-section row g-3 align-items-end mb-4">
+            <div class="col-md-3">
                 <select name="breed" class="form-select">
-                    <option value="" th:selected="${breed == null}">Semua Ras</option>
+                    <option value="">Semua Ras</option>
                     <option value="Kucing Kampung" th:selected="${breed == 'Kucing Kampung'}">Kucing Kampung</option>
                     <option value="Kucing Persia" th:selected="${breed == 'Kucing Persia'}">Kucing Persia</option>
                     <option value="Kucing Bengal" th:selected="${breed == 'Kucing Bengal'}">Kucing Bengal</option>
@@ -52,97 +99,73 @@
                     <option value="Kucing Siam" th:selected="${breed == 'Kucing Siam'}">Kucing Siam</option>
                 </select>
             </div>
-            <div class="col">
+            <div class="col-md-2">
                 <select name="gender" class="form-select">
-                    <option value="">Semua Jenis Kelamin</option>
+                    <option value="">Semua Gender</option>
                     <option value="Jantan" th:selected="${gender == 'Jantan'}">Jantan</option>
                     <option value="Betina" th:selected="${gender == 'Betina'}">Betina</option>
                 </select>
             </div>
-            <div class="col">
+            <div class="col-md-2">
                 <select name="adopted" class="form-select">
                     <option value="">Semua Adopsi</option>
-                    <option value="true" th:selected="${adopted == 'true'}">Sudah Diadopsi</option>
+                    <option value="true" th:selected="${adopted == 'true'}">Sudah</option>
                     <option value="false" th:selected="${adopted == 'false'}">Belum</option>
                 </select>
             </div>
-            <div class="col">
+            <div class="col-md-2">
                 <select name="validated" class="form-select">
                     <option value="">Semua Validasi</option>
-                    <option value="true" th:selected="${validated == 'true'}">Sudah Divalidasi</option>
+                    <option value="true" th:selected="${validated == 'true'}">Sudah</option>
                     <option value="false" th:selected="${validated == 'false'}">Belum</option>
                 </select>
             </div>
-            <div class="col">
-                <button class="btn btn-primary">Filter</button>
+            <div class="col-md-2">
+                <input type="text" name="name" class="form-control" placeholder="Cari nama" th:value="${searchName}">
             </div>
-            <div class="col-md-3">
-                <input type="text" name="name" class="form-control" placeholder="Cari nama kucing"
-                    th:value="${searchName}">
-            </div>
-            <div class="text-end col">
-                <a href="/cats/new" class="btn btn-success">
-                    <i class="bi bi-plus-circle"></i> Tambah Kucing
-                </a>
+            <div class="col-md-1 d-grid">
+                <button class="btn btn-primary btn-flat"><i class="bi bi-search"></i></button>
             </div>
         </form>
 
+        <div class="text-end mb-3">
+            <a href="/cats/new" class="btn btn-cyan btn-flat">
+                <i class="bi bi-plus-circle"></i> Tambah Kucing
+            </a>
+        </div>
 
-
+        <!-- Card List -->
         <div class="row" th:if="${cats.size() > 0}">
-            <div class="col-md-4 mb-3" th:each="cat : ${cats}">
-                <div class="card h-100 position-relative">
-
+            <div class="col-xl-3 col-lg-4 col-md-6 mb-4" th:each="cat : ${cats}">
+                <div class="card h-100">
                     <img th:src="@{'/images/' + ${cat.photo}}" class="card-img-top" alt="Foto Kucing">
                     <div class="card-body">
-                        <h5 class="card-title" th:text="${cat.name}">Nama Kucing</h5>
-
-                        <div class="row">
-                            <!-- Informasi Ras dan Umur -->
-                            <div class="col-md-6">
-                                <p class="card-text text-muted mb-2">
-                                    Ras: <span th:text="${cat.breed}">Ras</span><br>
-                                    Umur: <span th:text="${cat.age}">0</span> bulan
-                                </p>
-                            </div>
-
-                            <!-- Status Validasi dan Adopsi -->
-                            <div class="col-md-6 text-end">
-                                <!-- Status Validasi -->
-                                <p class="mb-1">
-                                    <span th:text="${cat.validated} ? 'Tervalidasi' : 'Belum Validasi'" class="me-2">
-                                        Status Validasi
-                                    </span>
-                                    <i class="fa-solid"
-                                        th:classappend="${cat.validated} ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'"
-                                        th:title="${cat.validated} ? 'Sudah divalidasi' : 'Belum divalidasi'"></i>
-                                </p>
-
-                                <!-- Status Adopsi -->
-                                <p class="mb-0">
-                                    <span th:text="${cat.adopted} ? 'Sudah Diadopsi' : 'Belum Diadopsi'" class="me-2">
-                                        Status Adopsi
-                                    </span>
-                                    <i class="fa-solid"
-                                        th:classappend="${cat.adopted} ? 'fa-heart text-danger' : 'fa-heart-crack text-muted'"
-                                        th:title="${cat.adopted} ? 'Sudah diadopsi' : 'Belum diadopsi'"></i>
-                                </p>
-                            </div>
-
-
-                        </div>
-
-                        <a th:href="@{'/cats/' + ${cat.id}}" class="btn btn-outline-primary btn-sm mt-3 w-100">
-                            <i class="fa-solid fa-eye"></i> Lihat Detail
+                        <h5 class="card-title mb-1" th:text="${cat.name}">Nama</h5>
+                        <p class="text-muted small">
+                            <i class="bi bi-tag"></i> <span th:text="${cat.breed}"></span> |
+                            <i class="bi bi-calendar-week"></i> <span th:text="${cat.age}"></span> bln
+                        </p>
+                        <p class="mb-1">
+                            <i class="fa-solid me-1"
+                                th:classappend="${cat.validated} ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'"></i>
+                            <span th:text="${cat.validated} ? 'Tervalidasi' : 'Belum Validasi'"></span>
+                        </p>
+                        <p class="mb-2">
+                            <i class="fa-solid me-1"
+                                th:classappend="${cat.adopted} ? 'fa-heart text-danger' : 'fa-heart-crack text-secondary'"></i>
+                            <span th:text="${cat.adopted} ? 'Sudah Diadopsi' : 'Belum Diadopsi'"></span>
+                        </p>
+                        <a th:href="@{'/cats/' + ${cat.id}}" class="btn btn-outline-primary btn-sm w-100">
+                            <i class="fa-solid fa-eye"></i> Detail
                         </a>
                     </div>
-
                 </div>
             </div>
         </div>
 
+        <!-- Jika kosong -->
         <div class="alert alert-warning text-center" th:if="${cats.size() == 0}">
-            Tidak ada data kucing saat ini.
+            Tidak ada data kucing ditemukan.
         </div>
     </div>
 </body>
