@@ -17,4 +17,6 @@ public class Cat {
     private String photo;
     private boolean validated;
     private boolean adopted;
+    
 }
+

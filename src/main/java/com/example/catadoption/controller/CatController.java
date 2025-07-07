@@ -31,18 +31,21 @@ public class CatController {
             @RequestParam(required = false) String adopted,
             Model model) {
 
-        breed = (breed == null || breed.isEmpty()) ? null : breed;
-        gender = (gender == null || gender.isEmpty()) ? null : gender;
-        Boolean isValidated = (validated == null || validated.isEmpty()) ? null : Boolean.valueOf(validated);
-        Boolean isAdopted = (adopted == null || adopted.isEmpty()) ? null : Boolean.valueOf(adopted);
+        // Normalisasi input kosong menjadi null
+        breed = (breed == null || breed.isBlank()) ? null : breed;
+        gender = (gender == null || gender.isBlank()) ? null : gender;
+        Boolean isValidated = (validated == null || validated.isBlank()) ? null : Boolean.valueOf(validated);
+        Boolean isAdopted = (adopted == null || adopted.isBlank()) ? null : Boolean.valueOf(adopted);
         name = (name == null || name.isBlank()) ? null : name.trim();
 
-        model.addAttribute("cats", catService.filterCats(name, breed, gender, isValidated, isAdopted));
+        model.addAttribute("cats", catService.filterCats(name, breed, gender, isAdopted, isValidated));
+
+        // Tambahkan nilai ke model untuk tetap mengisi filter form
+        model.addAttribute("breed", breed);
+        model.addAttribute("gender", gender);
+        model.addAttribute("adopted", adopted);
+        model.addAttribute("validated", validated);
         model.addAttribute("searchName", name);
-        model.addAttribute("selectedBreed", breed);
-        model.addAttribute("selectedGender", gender);
-        model.addAttribute("selectedValidated", isValidated);
-        model.addAttribute("selectedAdopted", isAdopted);
 
         return "cat/list";
     }
@@ -54,29 +57,25 @@ public class CatController {
     }
 
     @PostMapping
-    public String saveCat(@ModelAttribute Cat cat,
-            @RequestParam("file") MultipartFile file) throws IOException {
-
+    public String saveCat(@ModelAttribute Cat cat, @RequestParam("file") MultipartFile file) throws IOException {
         if (!file.isEmpty()) {
             String fileName = file.getOriginalFilename();
             File uploadPath = new File(System.getProperty("user.dir"), uploadDir);
-            if (!uploadPath.exists()) {
-                uploadPath.mkdirs();
-            }
+            if (!uploadPath.exists()) uploadPath.mkdirs();
 
             File destination = new File(uploadPath, fileName);
             file.transferTo(destination);
 
             cat.setPhoto(fileName);
         } else {
-        // 🔽 Ambil data lama jika tidak upload file baru
-        if (cat.getId() != null) {
-            Cat existingCat = catService.getCatById(cat.getId());
-            if (existingCat != null) {
-                cat.setPhoto(existingCat.getPhoto());
+            // Ambil data lama jika tidak upload file baru
+            if (cat.getId() != null) {
+                Cat existingCat = catService.getCatById(cat.getId());
+                if (existingCat != null) {
+                    cat.setPhoto(existingCat.getPhoto());
+                }
             }
         }
-    }
 
         catService.saveCat(cat);
         return "redirect:/cats";
@@ -115,5 +114,4 @@ public class CatController {
         catService.saveCat(cat);
         return "redirect:/cats/" + id;
     }
-
 }

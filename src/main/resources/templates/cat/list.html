@@ -21,11 +21,41 @@
             background-color: #0097a7;
         }
 
-
         body {
             background: linear-gradient(135deg, #e0f7fa, #fefefe);
             font-family: 'Segoe UI', sans-serif;
             color: #343a40;
+        }
+
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 220px;
+            background-color: #ffffff;
+            padding-top: 60px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 12px 20px;
+            color: #343a40;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar a:hover {
+            background-color: #00bcd4;
+            color: #fff;
+        }
+
+        .main-content {
+            margin-left: 240px;
+            padding: 20px;
         }
 
         .card {
@@ -47,10 +77,7 @@
         }
 
         .form-select,
-        .form-control {
-            border-radius: 10px;
-        }
-
+        .form-control,
         .btn-flat {
             border-radius: 10px;
         }
@@ -63,24 +90,33 @@
         }
 
         @media (max-width: 768px) {
-
-            .form-section .col-md-2,
-            .form-section .col-md-3 {
-                margin-bottom: 10px;
+            .sidebar {
+                position: relative;
+                height: auto;
+                width: 100%;
+                padding-top: 10px;
             }
 
-            .text-end {
-                text-align: left !important;
+            .main-content {
+                margin-left: 0;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="container py-4">
+
+    <div class="sidebar">
+        <a href="/cats"><i class="bi bi-list-ul me-2"></i> Daftar Kucing</a>
+        <a href="/adoptions"><i class="bi bi-clock-history me-2"></i> History Adopsi</a>
+        <a href="/adoptions/new"><i class="bi bi-heart-fill me-2"></i> Tambah Adopsi</a>
+
+    </div>
+
+    <div class="main-content">
         <h1 class="text-center mb-4">MANAJEMEN ADOPSI KUCING</h1>
 
-        <!-- Filter Form -->
+        <!-- Filter -->
         <form method="get" class="form-section row g-3 align-items-end mb-4">
             <div class="col-md-3">
                 <select name="breed" class="form-select">
@@ -134,7 +170,7 @@
             </a>
         </div>
 
-        <!-- Card List -->
+        <!-- List -->
         <div class="row" th:if="${cats.size() > 0}">
             <div class="col-xl-3 col-lg-4 col-md-6 mb-4" th:each="cat : ${cats}">
                 <div class="card h-100">
@@ -163,11 +199,12 @@
             </div>
         </div>
 
-        <!-- Jika kosong -->
+        <!-- Kosong -->
         <div class="alert alert-warning text-center" th:if="${cats.size() == 0}">
             Tidak ada data kucing ditemukan.
         </div>
     </div>
+
 </body>
 
 </html>
