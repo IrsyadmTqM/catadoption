@@ -8,6 +8,7 @@
     <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <style>
         .upload-box {
@@ -92,6 +93,24 @@
             font-weight: 700;
             color: #027b9a;
         }
+
+        .upload-box {
+            width: 80px;
+            height: 80px;
+            background-color: #f8f9fa;
+            border: 2px dashed #ced4da;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .upload-box:hover {
+            background-color: #e9ecef;
+        }
+
+        .upload-box i {
+            pointer-events: none;
+        }
     </style>
 </head>
 
@@ -148,20 +167,14 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label d-block">Foto</label>
-
-                    <input type="file" name="file" id="fileInput" class="d-none" onchange="previewFile(this)">
-
-                    <label for="fileInput" class="upload-box d-flex justify-content-center align-items-center">
-                        <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" width="40" alt="paw icon">
-                    </label>
-
-                    <!-- Preview jika sudah ada -->
-                    <div class="mt-3" th:if="${cat.photo}">
-                        <img th:src="@{'/images/' + ${cat.photo}}" alt="Foto Kucing" class="img-thumbnail img-preview">
+                    <label class="form-label">Foto</label>
+                    <div class="upload-wrapper">
+                        <input type="file" name="file" id="fileInput" class="d-none" onchange="previewIcon()">
+                        <label for="fileInput" class="upload-box d-flex align-items-center justify-content-center">
+                            <i id="uploadIcon" class="fa-solid fa-paw text-muted fs-2"></i>
+                        </label>
                     </div>
                 </div>
-
 
                 <div class="d-grid gap-2 mt-4">
                     <button type="submit" class="btn btn-primary">
@@ -174,6 +187,12 @@
             </form>
         </div>
     </div>
+    <script>
+        function previewIcon() {
+            const icon = document.getElementById('uploadIcon');
+            icon.className = 'fa-solid fa-check-circle text-success fs-2';
+        }
+    </script>
 </body>
 
 </html>
