@@ -67,18 +67,6 @@ src/
 └── templates/         # File HTML (Thymeleaf)
 
 
----
-
-## 📸 Cuplikan Tampilan
-
-| Halaman | Tampilan |
-|--------|----------|
-| Daftar Kucing | ![list](screenshots/list.png) |
-| Form Tambah/Edit | ![form](screenshots/form.png) |
-| Detail Kucing | ![detail](screenshots/detail.png) |
-
----
-
 ## ⚙ Cara Menjalankan Proyek
 
 1. Clone repositori
