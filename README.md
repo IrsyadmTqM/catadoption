@@ -7,7 +7,7 @@
 
 # 🐾 Website Manajemen Adopsi Kucing
 
-Website ini merupakan aplikasi manajemen adopsi kucing berbasis web yang dibangun menggunakan Spring Boot, **Thymeleaf, **Bootstrap 5, dan **MySQL. Tujuan utama dari aplikasi ini adalah untuk membantu shelter, pet shop, atau tempat adopsi hewan dalam mengelola informasi kucing yang tersedia untuk diadopsi secara efisien, rapi, dan modern.
+Website ini merupakan aplikasi manajemen adopsi kucing berbasis web yang dibangun menggunakan Spring Boot, *Thymeleaf*, *Bootstrap 5*, dan *MySQL*. Tujuan utama dari aplikasi ini adalah untuk membantu shelter, pet shop, atau tempat adopsi hewan dalam mengelola informasi kucing yang tersedia untuk diadopsi secara efisien, rapi, dan modern.
 
 ---
 
